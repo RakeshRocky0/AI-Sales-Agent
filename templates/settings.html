@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block subtitle %}FAQ & Courses{% endblock %}
+
+{% block content %}
+<div class="settings-grid animate-slide-up-1">
+  
+  <!-- LEFT PANEL: COURSES & ENGINES -->
+  <div class="settings-left-col">
+    <!-- Course Information Cards -->
+    <section class="grid-panel panel-courses mb-4">
+      <div class="panel-header">
+        <h3><i class="fa-solid fa-graduation-cap"></i> Dynamic Course Knowledge Base</h3>
+      </div>
+      <div class="panel-body course-cards-container">
+        {% for key, course in courses.items() %}
+        <div class="course-card">
+          <div class="course-card-header">
+            <span class="course-icon {% if 'python' in key %}python-color{% else %}java-color{% endif %}">
+              <i class="fa-brands {% if 'python' in key %}fa-python{% else %}fa-java{% endif %}"></i>
+            </span>
+            <div class="course-title-block">
+              <h4>{{ course.name }}</h4>
+              <span class="course-duration-badge">{{ course.duration }}</span>
+            </div>
+          </div>
+          <div class="course-card-body">
+            <div class="course-detail-row">
+              <span class="detail-label">Next Batch:</span>
+              <span class="detail-val">{{ course.next_batch }}</span>
+            </div>
+            <div class="course-detail-row">
+              <span class="detail-label">Training Fee:</span>
+              <span class="detail-val highlight-fee">{{ course.fee }}</span>
+            </div>
+            <div class="course-syllabus-block">
+              <h5>Syllabus Topics Include:</h5>
+              <div class="syllabus-tags">
+                {% for topic in course.topics %}
+                <span class="syllabus-tag">{{ topic }}</span>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- Twilio & Gemini Status Configurations -->
+    <section class="grid-panel panel-config">
+      <div class="panel-header">
+        <h3><i class="fa-solid fa-sliders"></i> Configuration Environment Status</h3>
+      </div>
+      <div class="panel-body">
+        <div class="config-grid">
+          <div class="config-item">
+            <span class="config-key">Twilio Integration Status</span>
+            <span class="config-status {% if env_status.twilio_configured %}success{% else %}warning{% endif %}">
+              <i class="fa-solid {% if env_status.twilio_configured %}fa-check-circle{% else %}fa-exclamation-triangle{% endif %}"></i>
+              {{ 'Active (Sid Connected)' if env_status.twilio_configured else 'Not Configured (Using Mockup)' }}
+            </span>
+          </div>
+          <div class="config-item">
+            <span class="config-key">Gemini AI Model Status</span>
+            <span class="config-status {% if env_status.gemini_configured %}success{% else %}warning{% endif %}">
+              <i class="fa-solid {% if env_status.gemini_configured %}fa-check-circle{% else %}fa-exclamation-triangle{% endif %}"></i>
+              {{ 'Active (' ~ env_status.gemini_model ~ ')' if env_status.gemini_configured else 'Disabled (Keyword fallback)' }}
+            </span>
+          </div>
+          <div class="config-item">
+            <span class="config-key">Simulated Phone Mode</span>
+            <span class="config-status {% if env_status.simulate_mode %}info{% else %}success{% endif %}">
+              <i class="fa-solid {% if env_status.simulate_mode %}fa-flask{% else %}fa-signal{% endif %}"></i>
+              {{ 'Simulate Calls (Enabled)' if env_status.simulate_mode else 'Live Calls (Enabled)' }}
+            </span>
+          </div>
+          <div class="config-item">
+            <span class="config-key">Twilio Webhook URL</span>
+            <span class="config-val small-code">{{ env_status.voice_webhook or 'N/A' }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- RIGHT PANEL: ACCORDION FAQ -->
+  <div class="settings-right-col">
+    <section class="grid-panel panel-faqs">
+      <div class="panel-header">
+        <h3><i class="fa-solid fa-circle-question"></i> Sales FAQ Knowledge Base</h3>
+      </div>
+      <div class="panel-body faq-accordion-container">
+        {% for key, faq in faqs.items() %}
+        <div class="faq-item">
+          <button class="faq-trigger">
+            <span>{{ faq.question }}</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <div class="faq-panel">
+            <p>{{ faq.answer }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/settings.js"></script>
+{% endblock %}

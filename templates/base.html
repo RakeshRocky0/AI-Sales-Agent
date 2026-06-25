@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>'Job Kottu' Agency - {% block subtitle %}{% endblock %}</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="/static/style.css" />
+    {% block extra_head %}{% endblock %}
+  </head>
+  <body>
+    <!-- App Container -->
+    <div class="app-container">
+      
+      <!-- Top Header -->
+      <header class="dashboard-header animate-fade-in">
+        <div class="logo">
+          <span class="logo-badge"><i class="fa-solid fa-phone-volume"></i></span>
+          <div class="logo-text">
+            <h2>'Job Kottu' Agency</h2>
+            <p>Interactive Calling Panel</p>
+          </div>
+        </div>
+        <div class="env-info">
+          <span class="badge {% if simulate %}badge-simulate{% else %}badge-live{% endif %}">
+            <i class="fa-solid {% if simulate %}fa-flask{% else %}fa-signal{% endif %}"></i>
+            {{ 'Simulated Call Mode' if simulate else 'Live Twilio Mode' }}
+          </span>
+          <span class="badge {% if gemini %}badge-gemini{% else %}badge-no-gemini{% endif %}">
+            <i class="fa-solid fa-brain"></i>
+            {{ 'Gemini AI Fallback: Active' if gemini else 'Gemini API: Not Configured (Keyword Mode)' }}
+          </span>
+        </div>
+      </header>
+
+      <!-- Sub Page Navigation Tabs -->
+      <nav class="dashboard-nav animate-fade-in">
+        <a href="/" class="nav-item {% if active_page == 'simulator' %}active{% endif %}">
+          <i class="fa-solid fa-headset"></i> Call Simulator
+        </a>
+        <a href="/bookings" class="nav-item {% if active_page == 'bookings' %}active{% endif %}">
+          <i class="fa-solid fa-address-book"></i> Bookings Dashboard
+        </a>
+        <a href="/settings" class="nav-item {% if active_page == 'settings' %}active{% endif %}">
+          <i class="fa-solid fa-circle-info"></i> FAQ & Courses
+        </a>
+      </nav>
+
+      <!-- Main Dynamic Content Block -->
+      <main class="dashboard-content">
+        {% block content %}{% endblock %}
+      </main>
+      
+      <!-- Footer -->
+      <footer class="dashboard-footer mt-4">
+        <p>'Job Kottu' Agency © 2026. Made with ❤️ for interactive AI demonstrations.</p>
+      </footer>
+    </div>
+
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

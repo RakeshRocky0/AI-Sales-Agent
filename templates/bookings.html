@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block subtitle %}Bookings Dashboard{% endblock %}
+
+{% block content %}
+      <!-- Stats Overview Row -->
+      <div class="metrics-row animate-slide-up-1">
+        <div class="metric-card">
+          <div class="metric-icon"><i class="fa-solid fa-address-book"></i></div>
+          <div class="metric-data">
+            <h4 id="metricTotal">0</h4>
+            <p>Total Bookings</p>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon python-icon"><i class="fa-brands fa-python"></i></div>
+          <div class="metric-data">
+            <h4 id="metricPython">0</h4>
+            <p>Python Bookings</p>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon java-icon"><i class="fa-brands fa-java"></i></div>
+          <div class="metric-data">
+            <h4 id="metricJava">0</h4>
+            <p>Java Bookings</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOOKINGS MANAGER PANEL -->
+      <section class="grid-panel panel-bookings animate-slide-up-2">
+        <div class="panel-header">
+          <div class="bookings-title">
+            <h3><i class="fa-solid fa-address-book"></i> Student Demo Booking Manager</h3>
+            <span class="badge badge-secondary" id="bookingCount">0 Bookings</span>
+          </div>
+          <div class="bookings-actions">
+            <div class="search-box">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input id="searchBookings" placeholder="Search bookings..." />
+            </div>
+            <button id="clearAllBookingsBtn" class="btn btn-danger">
+              <i class="fa-solid fa-trash-can"></i> Clear Database
+            </button>
+          </div>
+        </div>
+        <div class="panel-body table-container">
+          <table class="bookings-table">
+            <thead>
+              <tr>
+                <th>Student Name</th>
+                <th>Phone Number</th>
+                <th>Enrolled Course</th>
+                <th>Demo Day</th>
+                <th>Demo Time Slot</th>
+                <th>Booking Date</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="bookingsTableBody">
+              <tr>
+                <td colspan="8" class="text-center py-4 text-muted">No bookings registered yet.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/bookings.js"></script>
+{% endblock %}

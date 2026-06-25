@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block subtitle %}Call Simulator{% endblock %}
+
+{% block content %}
+      <!-- Dashboard Layout Grid -->
+      <div class="dashboard-grid">
+        
+        <!-- COLUMN 1: INTERACTIVE SIMULATOR -->
+        <section class="grid-panel panel-simulator animate-slide-up-1">
+          <div class="panel-header">
+            <h3><i class="fa-solid fa-headset"></i> AI Call Simulator</h3>
+            <div class="simulator-controls">
+              <button id="ttsToggle" class="btn-icon active" title="Toggle Speech Readout (Voice)">
+                <i class="fa-solid fa-volume-high"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="simulator-body">
+            <!-- Simulated Phone Mock -->
+            <div class="phone-mockup" id="phoneMockup">
+              <!-- Ringing/Idle Overlay -->
+              <div class="phone-screen-overlay" id="phoneOverlay">
+                <div class="phone-avatar-pulse">
+                  <div class="avatar-ring ring-1"></div>
+                  <div class="avatar-ring ring-2"></div>
+                  <i class="fa-solid fa-user-tie"></i>
+                </div>
+                <h4 id="phoneContactName">Rocky (AI Developer)</h4>
+                <p id="phoneCallStatus">Idle</p>
+                
+                <div class="phone-setup-form" id="phoneSetupForm">
+                  <div class="field">
+                    <label for="studentName"><i class="fa-solid fa-user"></i> Candidate Name</label>
+                    <input id="studentName" placeholder="e.g. Anjali" value="Anjali" />
+                  </div>
+                  <div class="field">
+                    <label for="phone"><i class="fa-solid fa-phone"></i> Candidate Mobile</label>
+                    <input id="phone" placeholder="e.g. +91 98765 43210" value="{{ student_number or '+919876543210' }}" />
+                  </div>
+                  <div class="field">
+                    <label for="callLanguage"><i class="fa-solid fa-globe"></i> Call Language</label>
+                    <select id="callLanguage">
+                      <option value="te-IN" selected>Telugu (Mixed Slang)</option>
+                      <option value="en-IN">English (Indian English)</option>
+                      <option value="hi-IN">Hindi (हिंदी)</option>
+                      <option value="es-ES">Spanish (Español)</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="voiceGender"><i class="fa-solid fa-venus-mars"></i> AI Voice Gender</label>
+                    <select id="voiceGender">
+                      <option value="female" selected>Female Voice</option>
+                      <option value="male">Male Voice</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="phone-actions">
+                  <button id="startSimBtn" class="btn btn-success">
+                    <i class="fa-solid fa-play"></i> Start Simulator Call
+                  </button>
+                  <button id="triggerRealCallBtn" class="btn btn-outline-primary">
+                    <i class="fa-solid fa-phone"></i> Make Real Outbound Call
+                  </button>
+                </div>
+              </div>
+
+              <!-- Active Call Chat View -->
+              <div class="phone-call-view" id="phoneCallView" style="display: none;">
+                <div class="call-view-header">
+                  <div class="caller-mini-info">
+                    <span class="avatar-mini"><i class="fa-solid fa-user-tie"></i></span>
+                    <div>
+                      <h5>Rocky (AI Developer)</h5>
+                      <span class="call-duration" id="callDuration">00:00</span>
+                    </div>
+                  </div>
+                  <button id="endCallBtn" class="btn-end-call" title="End Call">
+                    <i class="fa-solid fa-phone-slash"></i>
+                  </button>
+                </div>
+
+                <!-- Waveform Speech Indicator -->
+                <div class="waveform-container" id="waveformContainer">
+                  <div class="wave-bar"></div>
+                  <div class="wave-bar"></div>
+                  <div class="wave-bar"></div>
+                  <div class="wave-bar"></div>
+                  <div class="wave-bar"></div>
+                  <div class="wave-bar"></div>
+                  <div class="wave-bar"></div>
+                  <div class="wave-bar"></div>
+                </div>
+
+                <!-- Chat transcript log -->
+                <div class="chat-transcript" id="chatTranscript">
+                  <!-- Messages populated by JS -->
+                </div>
+
+                <!-- User input options -->
+                <div class="chat-input-bar">
+                  <button id="micBtn" class="btn-mic" title="Speak Response (Microphone)">
+                    <i class="fa-solid fa-microphone"></i>
+                  </button>
+                  <input id="chatInput" placeholder="Type your response to Rocky..." disabled />
+                  <button id="sendBtn" class="btn-send" disabled>
+                    <i class="fa-solid fa-paper-plane"></i>
+                  </button>
+                </div>
+                <div class="speech-hint" id="speechHint">Speech recognition is idle</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- COLUMN 2: STATE INSPECTOR -->
+        <aside class="grid-panel panel-inspector animate-slide-up-2">
+          <div class="panel-header">
+            <h3><i class="fa-solid fa-diagram-project"></i> Active State Inspector</h3>
+          </div>
+          <div class="panel-body">
+            <!-- Stage Stepper -->
+            <div class="stage-stepper">
+              <div class="step-item" data-stage="intro">
+                <span class="step-dot">1</span>
+                <span class="step-label">Intro Check</span>
+              </div>
+              <div class="step-item" data-stage="course_selection">
+                <span class="step-dot">2</span>
+                <span class="step-label">Course Selection</span>
+              </div>
+              <div class="step-item" data-stage="demo_interest">
+                <span class="step-dot">3</span>
+                <span class="step-label">Demo Pitch</span>
+              </div>
+              <div class="step-item" data-stage="demo_date_selection">
+                <span class="step-dot">4</span>
+                <span class="step-label">Date Selection</span>
+              </div>
+              <div class="step-item" data-stage="demo_time_selection">
+                <span class="step-dot">5</span>
+                <span class="step-label">Time Selection</span>
+              </div>
+              <div class="step-item" data-stage="collect_student_details">
+                <span class="step-dot">6</span>
+                <span class="step-label">Details Intake</span>
+              </div>
+              <div class="step-item" data-stage="booking_complete">
+                <span class="step-dot">7</span>
+                <span class="step-label">Confirmed</span>
+              </div>
+            </div>
+
+            <!-- State Grid -->
+            <div class="state-grid mt-4">
+              <div class="state-item">
+                <span class="state-key">Current Stage</span>
+                <span class="state-val highlight" id="stateStage">-</span>
+              </div>
+              <div class="state-item">
+                <span class="state-key">Selected Course</span>
+                <span class="state-val" id="stateCourse">-</span>
+              </div>
+              <div class="state-item">
+                <span class="state-key">Demo Date</span>
+                <span class="state-val" id="stateDate">-</span>
+              </div>
+              <div class="state-item">
+                <span class="state-key">Demo Time</span>
+                <span class="state-val" id="stateTime">-</span>
+              </div>
+              <div class="state-item">
+                <span class="state-key">Student Name</span>
+                <span class="state-val" id="stateName">-</span>
+              </div>
+              <div class="state-item">
+                <span class="state-key">Mobile Number</span>
+                <span class="state-val" id="stateMobile">-</span>
+              </div>
+              <div class="state-item">
+                <span class="state-key">Call Session ID</span>
+                <span class="state-val small-text" id="stateSessionId">-</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/simulator.js"></script>
+{% endblock %}
