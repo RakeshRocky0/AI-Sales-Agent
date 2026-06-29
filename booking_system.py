@@ -6,7 +6,13 @@ import os
 from datetime import datetime
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-BOOKINGS_FILE = os.path.join(BASE_DIR, "student_bookings.json")
+DATA_DIR = os.getenv("DATA_DIR", BASE_DIR)
+if not os.path.exists(DATA_DIR):
+    try:
+        os.makedirs(DATA_DIR, exist_ok=True)
+    except Exception as e:
+        print(f"Warning: Could not create DATA_DIR {DATA_DIR}: {e}")
+BOOKINGS_FILE = os.path.join(DATA_DIR, "student_bookings.json")
 
 def load_bookings():
     """Load existing bookings from file"""

@@ -1,0 +1,44 @@
+# Render Blueprint Specification
+# See https://render.com/docs/blueprints for details
+services:
+  - type: web
+    name: ai-call-assistant
+    runtime: python
+    # Select Python version (e.g., 3.10.x / 3.11.x)
+    # Render uses Python 3.10 by default
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+        description: "Google Gemini API Key for resolving custom questions"
+
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+        description: "Twilio Account SID (for real voice calls)"
+
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+        description: "Twilio Auth Token (for real voice calls)"
+
+      - key: TWILIO_FROM_NUMBER
+        sync: false
+        description: "Your Twilio phone number in E.164 format (e.g., +16592215195)"
+
+      - key: SIMULATE_MODE
+        value: "false"
+        description: "Set to true to use browser voice simulator instead of real phone calls"
+
+      - key: VOICE_WEBHOOK_URL
+        sync: false
+        description: "Your public Render URL pointing to /voice (e.g., https://your-app-name.onrender.com/voice)"
+
+      # Optional persistent disk directory (uncomment if you upgrade to a paid starter tier)
+      # - key: DATA_DIR
+      #   value: "/data"
+
+    # Persistent disk configuration (uncomment if you upgrade to a paid starter tier)
+    # disk:
+    #   name: bookings-data
+    #   mountPath: /data
+    #   sizeGB: 1
